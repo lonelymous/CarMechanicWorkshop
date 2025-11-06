@@ -9,5 +9,13 @@ namespace CarMechanicWorkshop.API.Data
 
         public DbSet<ClientDatabase> Clients => Set<ClientDatabase>();
         public DbSet<JobDatabase> Jobs => Set<JobDatabase>();
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ClientDatabase>().ToTable("Clients");
+            modelBuilder.Entity<JobDatabase>().ToTable("Jobs");
+        }
     }
 }
