@@ -6,15 +6,15 @@ using CarMechanicWorkshop.Shared.Models.DTOs;
 namespace CarMechanicWorkshop.API.Services;
 
 /// <summary>
-/// Service for managing ClientDatabase entities
+/// Service for managing JobsDatabase entities
 /// </summary>
-public class ClientsService : IClientsService
+public class JobsService : IJobsService
 {
-    private readonly IRepository<ClientDatabase> _repository;
+    private readonly IRepository<JobDatabase> _repository;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
-    public ClientsService(IRepository<ClientDatabase> repository, IMapper mapper, IUnitOfWork unitOfWork)
+    public JobsService(IRepository<JobDatabase> repository, IMapper mapper, IUnitOfWork unitOfWork)
     {
         _repository = repository;
         _mapper = mapper;
@@ -22,34 +22,34 @@ public class ClientsService : IClientsService
     }
 
     /// <summary>
-    /// Get all clients asynchronously
+    /// Get all jobs asynchronously
     /// </summary>
-    /// <returns>A <see cref="IEnumerable{ClientDTO}"/> list of all clients</returns>
-    public async Task<IEnumerable<ClientDTO>> GetAllAsync()
+    /// <returns>A <see cref="IEnumerable{JobDTO}"/> list of all jobs</returns>
+    public async Task<IEnumerable<JobDTO>> GetAllAsync()
     {
-        var clients = await _repository.GetAllAsync();
-        return _mapper.Map<IEnumerable<ClientDTO>>(clients);
+        var jobs = await _repository.GetAllAsync();
+        return _mapper.Map<IEnumerable<JobDTO>>(jobs);
     }
 
     /// <summary>
-    /// Get a client by its ID asynchronously
+    /// Get a job by its ID asynchronously
     /// </summary>
-    /// <param name="id"> The ID of the client </param>
-    /// <returns> The <see cref="ClientDTO"/> client if found, otherwise null </returns>
-    public async Task<ClientDTO?> GetByIdAsync(int id)
+    /// <param name="id"> The ID of the job </param>
+    /// <returns> The <see cref="JobDTO"/> job if found, otherwise null </returns>
+    public async Task<JobDTO?> GetByIdAsync(int id)
     {
-        var client = await _repository.GetByIdAsync(id);
-        return _mapper.Map<ClientDTO?>(client);
+        var job = await _repository.GetByIdAsync(id);
+        return _mapper.Map<JobDTO?>(job);
     }
 
     /// <summary>
-    /// Create a new client asynchronously
+    /// Create a new job asynchronously
     /// </summary>
-    /// <param name="dto"> The <see cref="CreateClientDTO"/> client DTO to create </param>
-    /// <returns> The created <see cref="ClientDTO"/> </returns>
-    public async Task<ClientDTO> CreateAsync(CreateClientDTO dto)
+    /// <param name="dto"> The <see cref="CreateJobDTO"/> job DTO to create </param>
+    /// <returns> The created <see cref="JobDTO"/> </returns>
+    public async Task<JobDTO> CreateAsync(CreateJobDTO dto)
     {
-        var entity = _mapper.Map<ClientDatabase>(dto);
+        var entity = _mapper.Map<JobDatabase>(dto);
         await _unitOfWork.BeginTransactionAsync();
         try
         {
@@ -62,16 +62,16 @@ public class ClientsService : IClientsService
             await _unitOfWork.RollbackTransactionAsync();
             throw;
         }
-        return _mapper.Map<ClientDTO>(entity);
+        return _mapper.Map<JobDTO>(entity);
     }
 
     /// <summary>
-    /// Update an existing client asynchronously
+    /// Update an existing job asynchronously
     /// </summary>
-    /// <param name="id"> The ID of the client to update </param>
-    /// <param name="dto"> The <see cref="UpdateClientDTO"/> client DTO to update </param>
-    /// <returns> The updated <see cref="ClientDTO"/> if found, otherwise null </returns>
-    public async Task<ClientDTO?> UpdateAsync(int id, UpdateClientDTO dto)
+    /// <param name="id"> The ID of the job to update </param>
+    /// <param name="dto"> The <see cref="UpdateJobDTO"/> job DTO to update </param>
+    /// <returns> The updated <see cref="JobDTO"/> if found, otherwise null </returns>
+    public async Task<JobDTO?> UpdateAsync(int id, UpdateJobDTO dto)
     {
         var existing = await _repository.GetByIdAsync(id);
         if (existing is null) return null;
@@ -91,13 +91,13 @@ public class ClientsService : IClientsService
             throw;
         }
 
-        return _mapper.Map<ClientDTO>(existing);
+        return _mapper.Map<JobDTO>(existing);
     }
 
     /// <summary>
-    /// Delete a client by its ID asynchronously
+    /// Delete a job by its ID asynchronously
     /// </summary>
-    /// <param name="id"> The ID of the client to delete </param>
+    /// <param name="id"> The ID of the job to delete </param>
     /// <returns> The success status of the operation </returns>
     public async Task<bool> DeleteAsync(int id)
     {
@@ -120,13 +120,13 @@ public class ClientsService : IClientsService
     }
 
     /// <summary>
-    /// Delete a client asynchronously
+    /// Delete a job asynchronously
     /// </summary>
-    /// <param name="dto"> The <see cref="ClientDTO"/> client DTO to delete </param>
+    /// <param name="dto"> The <see cref="JobDTO"/> job DTO to delete </param>
     /// <returns> The success status of the operation </returns>
-    public async Task<bool> DeleteAsync(ClientDTO dto)
+    public async Task<bool> DeleteAsync(JobDTO dto)
     {
-        var entity = _mapper.Map<ClientDatabase>(dto);
+        var entity = _mapper.Map<JobDatabase>(dto);
         await _repository.DeleteAsync(entity);
         return true;
     }
