@@ -1,5 +1,5 @@
 using AutoMapper;
-using CarMechanicWorkshop.API.Models.DTOs;
+using CarMechanicWorkshop.Shared.Models.DTOs;
 using CarMechanicWorkshop.Shared.Models.Database;
 
 namespace CarMechanicWorkshop.API.Mapping;

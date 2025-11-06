@@ -1,7 +1,7 @@
 using AutoMapper;
 using CarMechanicWorkshop.API.Interfaces;
-using CarMechanicWorkshop.API.Models.DTOs;
 using CarMechanicWorkshop.Shared.Models.Database;
+using CarMechanicWorkshop.Shared.Models.DTOs;
 
 namespace CarMechanicWorkshop.API.Services;
 

@@ -1,5 +1,5 @@
 using CarMechanicWorkshop.API.Interfaces;
-using CarMechanicWorkshop.API.Models.DTOs;
+using CarMechanicWorkshop.Shared.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarMechanicWorkshop.API.Controllers;

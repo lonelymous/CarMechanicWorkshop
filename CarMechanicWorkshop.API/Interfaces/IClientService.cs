@@ -1,4 +1,4 @@
-﻿using CarMechanicWorkshop.API.Models.DTOs;
+﻿using CarMechanicWorkshop.Shared.Models.DTOs;
 
 namespace CarMechanicWorkshop.API.Interfaces
 {
