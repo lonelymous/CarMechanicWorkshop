@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarMechanicWorkshop.API.Repositories;
 
-public class ClientRepository : IRepository<ClientDatabase>
+public class ClientsRepository : IRepository<ClientDatabase>
 {
     private readonly CarMechanicWorkshopContext _context;
     private readonly DbSet<ClientDatabase> _clients;
 
-    public ClientRepository(CarMechanicWorkshopContext context)
+    public ClientsRepository(CarMechanicWorkshopContext context)
     {
         _context = context;
         _clients = context.Set<ClientDatabase>();

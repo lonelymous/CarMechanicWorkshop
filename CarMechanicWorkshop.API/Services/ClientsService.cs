@@ -5,13 +5,13 @@ using CarMechanicWorkshop.Shared.Models.DTOs;
 
 namespace CarMechanicWorkshop.API.Services;
 
-public class ClientService : IClientService
+public class ClientsService : IClientsService
 {
     private readonly IRepository<ClientDatabase> _repository;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
-    public ClientService(IRepository<ClientDatabase> repository, IMapper mapper, IUnitOfWork unitOfWork)
+    public ClientsService(IRepository<ClientDatabase> repository, IMapper mapper, IUnitOfWork unitOfWork)
     {
         _repository = repository;
         _mapper = mapper;

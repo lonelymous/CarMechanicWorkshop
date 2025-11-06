@@ -6,12 +6,12 @@ namespace CarMechanicWorkshop.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ClientController : ControllerBase
+public class ClientsController : ControllerBase
 {
-    private readonly ILogger<ClientController> _logger;
-    private readonly IClientService _service;
+    private readonly ILogger<ClientsController> _logger;
+    private readonly IClientsService _service;
 
-    public ClientController(ILogger<ClientController> logger, IClientService service)
+    public ClientsController(ILogger<ClientsController> logger, IClientsService service)
     {
         _logger = logger;
         _service = service;
@@ -23,8 +23,8 @@ public class ClientController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var created = await _service.CreateAsync(dto);
-        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        var createdClient = await _service.CreateAsync(dto);
+        return CreatedAtAction(nameof(GetClientById), new { clientId = createdClient.Id }, createdClient);
     }
 
     [HttpGet]
