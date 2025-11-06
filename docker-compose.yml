@@ -1,0 +1,26 @@
+version: '3.9'
+services:
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+
+  backend:
+    build:
+      context: .                # <— build from solution root
+      dockerfile: CarMechanicWorkshop.API/Dockerfile
+    depends_on:
+      - database
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=database;Database=CarMechanicWorkshopDatabase;User=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True
+    ports:
+      - "8080:8080"
+
+volumes:
+  sql_data:
