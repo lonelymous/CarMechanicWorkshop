@@ -25,7 +25,7 @@ services:
   
   frontend:
     build:
-      context: .
+      context: .                # <— build from solution root
       dockerfile: CarMechanicWorkshop.Client/Dockerfile
     depends_on:
       - backend
