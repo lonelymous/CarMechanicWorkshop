@@ -2,7 +2,7 @@
 
 namespace CarMechanicWorkshop.API.Interfaces
 {
-    public interface IClientService
+    public interface IClientsService
     {
         /// <summary>
         /// Get all clients asynchronously

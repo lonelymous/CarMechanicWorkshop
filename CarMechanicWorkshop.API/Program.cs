@@ -27,12 +27,21 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(typeof(ClientProfile));
 
 // Repositories & Services
-builder.Services.AddScoped<IRepository<ClientDatabase>, ClientRepository>();
-builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IRepository<ClientDatabase>, ClientsRepository>();
+builder.Services.AddScoped<IClientsService, ClientsService>();
 
 builder.Services.AddSerilog(option =>
         option.MinimumLevel.Information()
         .WriteTo.Console());
+
+// Add CORS policy
+builder.Services.AddCors(policy =>
+{
+    policy.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -55,6 +64,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Use CORS policy
+app.UseCors();
 
 app.UseAuthorization();
 
