@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using CarMechanicWorkshop.API.Interfaces;
 using CarMechanicWorkshop.API.Data;
 
+// TODO: useless
 namespace CarMechanicWorkshop.API.Repositories
 {
     /// <summary>
