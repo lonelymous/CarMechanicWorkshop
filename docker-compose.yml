@@ -21,8 +21,6 @@ services:
       - ConnectionStrings__DefaultConnection=Server=database;Database=CarMechanicWorkshopDatabase;User=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True
     ports:
       - "8080:8080"
-<<<<<<< Updated upstream
-=======
     
   
   frontend:
@@ -36,7 +34,6 @@ services:
       - BackendApiUrl=http://backend:8080
     ports:
       - "8081:80"
->>>>>>> Stashed changes
 
 volumes:
   sql_data:
