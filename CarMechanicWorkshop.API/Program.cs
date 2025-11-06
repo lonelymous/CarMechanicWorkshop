@@ -40,7 +40,10 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<CarMechanicWorkshopContext>();
-    db.Database.Migrate(); // applies all pending migrations
+    if ((await db.Database.GetPendingMigrationsAsync()).Any())
+    {
+        await db.Database.MigrateAsync();
+    }
 }
 
 // Configure the HTTP request pipeline.
