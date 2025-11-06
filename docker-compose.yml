@@ -18,7 +18,7 @@ services:
       - database
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=database;Database=CarMechanicWorkshopDb;User=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True
+      - ConnectionStrings__DefaultConnection=Server=database;Database=CarMechanicWorkshopDatabase;User=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True
     ports:
       - "8080:8080"
 
