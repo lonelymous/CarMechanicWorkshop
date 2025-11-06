@@ -1,9 +1,10 @@
 using AutoMapper;
 using CarMechanicWorkshop.API.Interfaces;
 using CarMechanicWorkshop.API.Mapping;
-using CarMechanicWorkshop.API.Models.DTOs;
 using CarMechanicWorkshop.API.Services;
 using CarMechanicWorkshop.Shared.Models.Database;
+using CarMechanicWorkshop.Shared.Models.DTOs;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -15,8 +16,24 @@ public class ClientServiceTests
 
     public ClientServiceTests()
     {
-        var config = new MapperConfiguration(cfg => cfg.AddProfile(new ClientProfile()));
+        var loggerFactory = LoggerFactory.Create(builder =>
+        {
+            builder.AddConsole();
+        });
+
+        var config = new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile<ClientProfile>();
+        }, loggerFactory);
+
         _mapper = config.CreateMapper();
+    }
+
+        [Fact]
+    public void AutoMapperConfiguration_IsValid()
+    {
+        // This ensures mappings are correct and won't throw at runtime
+        _mapper.ConfigurationProvider.AssertConfigurationIsValid();
     }
 
     [Fact]
