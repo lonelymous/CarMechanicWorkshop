@@ -17,22 +17,8 @@ public class ClientController : ControllerBase
         _service = service;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<ClientDTO>>> GetAll()
-    {
-        var clients = await _service.GetAllAsync();
-        return Ok(clients);
-    }
-
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<ClientDTO>> GetById(int id)
-    {
-        var client = await _service.GetByIdAsync(id);
-        return client is null ? NotFound() : Ok(client);
-    }
-
     [HttpPost]
-    public async Task<ActionResult<ClientDTO>> Create([FromBody] CreateClientDTO dto)
+    public async Task<ActionResult<ClientDTO>> CreateClient([FromBody] CreateClientDTO dto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -41,20 +27,34 @@ public class ClientController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult<ClientDTO>> Update(int id, [FromBody] UpdateClientDTO dto)
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<ClientDTO>>> GetAllClients()
+    {
+        var clients = await _service.GetAllAsync();
+        return Ok(clients);
+    }
+
+    [HttpGet("{clientId:int}")]
+    public async Task<ActionResult<ClientDTO>> GetClientById(int clientId)
+    {
+        var client = await _service.GetByIdAsync(clientId);
+        return client is null ? NotFound() : Ok(client);
+    }
+
+    [HttpPut("{clientId:int}")]
+    public async Task<ActionResult<ClientDTO>> UpdateClientById(int clientId, [FromBody] UpdateClientDTO dto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var updated = await _service.UpdateAsync(id, dto);
+        var updated = await _service.UpdateAsync(clientId, dto);
         return updated is null ? NotFound() : Ok(updated);
     }
 
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    [HttpDelete("{clientId:int}")]
+    public async Task<IActionResult> DeleteClientById(int clientId)
     {
-        var success = await _service.DeleteAsync(id);
+        var success = await _service.DeleteAsync(clientId);
         return success ? NoContent() : NotFound();
     }
 }
