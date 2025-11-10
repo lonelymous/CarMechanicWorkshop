@@ -43,7 +43,7 @@ public class ClientServiceTests
         var mockRepo = new Mock<IRepository<ClientDatabase>>();
         var mockUow = new Mock<IUnitOfWork>();
 
-        var service = new ClientService(mockRepo.Object, _mapper, mockUow.Object);
+        var service = new ClientsService(mockRepo.Object, _mapper, mockUow.Object);
 
         var dto = new CreateClientDTO
         {
@@ -67,7 +67,7 @@ public class ClientServiceTests
         var mockUow = new Mock<IUnitOfWork>();
         mockRepo.Setup(r => r.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((ClientDatabase?)null);
 
-        var service = new ClientService(mockRepo.Object, _mapper, mockUow.Object);
+        var service = new ClientsService(mockRepo.Object, _mapper, mockUow.Object);
 
         var result = await service.GetByIdAsync(42);
 
@@ -85,7 +85,7 @@ public class ClientServiceTests
 
         var mockUow = new Mock<IUnitOfWork>();
 
-        var service = new ClientService(mockRepo.Object, _mapper, mockUow.Object);
+        var service = new ClientsService(mockRepo.Object, _mapper, mockUow.Object);
 
         var result = await service.UpdateAsync(1, dto);
 
