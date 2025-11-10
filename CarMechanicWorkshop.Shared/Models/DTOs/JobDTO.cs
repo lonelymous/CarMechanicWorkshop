@@ -16,5 +16,5 @@ public class JobDTO
     public string Description { get; set; } = string.Empty;
     public int Severity { get; set; }
     public JobStatusEnum Status { get; set; }
-    public double EstimatedHours { get; set; }
+    public decimal EstimatedHours { get; set; }
 }
