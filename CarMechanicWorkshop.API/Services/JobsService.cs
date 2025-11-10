@@ -10,11 +10,11 @@ namespace CarMechanicWorkshop.API.Services;
 /// </summary>
 public class JobsService : IJobsService
 {
-    private readonly IRepository<JobDatabase> _repository;
+    private readonly IJobsRepository _repository;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
-    public JobsService(IRepository<JobDatabase> repository, IMapper mapper, IUnitOfWork unitOfWork)
+    public JobsService(IJobsRepository repository, IMapper mapper, IUnitOfWork unitOfWork)
     {
         _repository = repository;
         _mapper = mapper;
@@ -28,6 +28,17 @@ public class JobsService : IJobsService
     public async Task<IEnumerable<JobDTO>> GetAllAsync()
     {
         var jobs = await _repository.GetAllAsync();
+        return _mapper.Map<IEnumerable<JobDTO>>(jobs);
+    }
+
+    /// <summary>
+    /// Get all jobs asynchronously
+    /// </summary>
+    /// <param name="clientId"> The ID of the client </param>
+    /// <returns>A <see cref="IEnumerable{JobDTO}"/> list of all jobs by client</returns>
+    public async Task<IEnumerable<JobDTO>> GetAllByClientIdAsync(int clientId)
+    {
+        var jobs = await _repository.GetAllByClientIdAsync(clientId);
         return _mapper.Map<IEnumerable<JobDTO>>(jobs);
     }
 
