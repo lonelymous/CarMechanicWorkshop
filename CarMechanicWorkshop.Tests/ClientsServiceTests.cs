@@ -10,11 +10,11 @@ using Xunit;
 
 namespace CarMechanicWorkshop.Tests;
 
-public class ClientServiceTests
+public class ClientsServiceTests
 {
     private readonly IMapper _mapper;
 
-    public ClientServiceTests()
+    public ClientsServiceTests()
     {
         var loggerFactory = LoggerFactory.Create(builder =>
         {
@@ -29,7 +29,7 @@ public class ClientServiceTests
         _mapper = config.CreateMapper();
     }
 
-        [Fact]
+    [Fact]
     public void AutoMapperConfiguration_IsValid()
     {
         // This ensures mappings are correct and won't throw at runtime
