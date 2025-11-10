@@ -11,6 +11,13 @@ namespace CarMechanicWorkshop.API.Interfaces
         public Task<IEnumerable<JobDTO>> GetAllAsync();
 
         /// <summary>
+        /// Get a job by client ID asynchronously
+        /// </summary>
+        /// <param name="clientId"> The ID of the client </param>
+        /// <returns> A <see cref="IEnumerable{JobDTO}"/> list of jobs by client </returns>
+        public Task<IEnumerable<JobDTO>> GetAllByClientIdAsync(int clientId);
+
+        /// <summary>
         /// Get a job by its ID asynchronously
         /// </summary>
         /// <param name="id"> The ID of the job </param>
