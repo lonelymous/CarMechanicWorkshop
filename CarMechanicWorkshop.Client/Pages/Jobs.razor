@@ -215,7 +215,6 @@ else
             isLoading = true;
             IEnumerable<JobDTO>? result;
 
-            Console.WriteLine($"LoadJobsAsync | selectedClientId:\t{selectedClientId}");
             if (selectedClientId > 0)
                 result = await JobsService.GetAllByClientIdAsync(selectedClientId);
             else
@@ -238,8 +237,6 @@ else
 
     private async Task ClientFilterChanged(ChangeEventArgs e)
     {
-        Console.WriteLine($"ClientFilterChanged | {e}");
-        Console.WriteLine($"ClientFilterChanged | SelectedClientId:\t{selectedClientId}");
         await LoadJobsAsync();
     }
 
