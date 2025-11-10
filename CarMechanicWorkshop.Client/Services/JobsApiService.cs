@@ -31,6 +31,14 @@ public class JobsApiService
         await _http.GetFromJsonAsync<JobDTO>($"jobs/{jobId}");
 
     /// <summary>
+    /// Retrieves all jobs by client id filtering.
+    /// </summary>
+    /// <param name="clientId"> The ID of the client to filter </param>
+    /// <returns> A collection of <see cref="JobDTO"/> objects. </returns>
+    public async Task<IEnumerable<JobDTO>?> GetAllByClientIdAsync(int clientId) =>
+        await _http.GetFromJsonAsync<IEnumerable<JobDTO>>($"jobs?clientId={clientId}");
+
+    /// <summary>
     /// Creates a new job.
     /// </summary>
     /// <param name="dto"> The <see cref="CreateJobDTO"/> data transfer object containing job details.</param>
