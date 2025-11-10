@@ -52,7 +52,7 @@ public class JobDatabase
     /// <summary>
     /// Gets the estimated hours required to complete the job.
     /// </summary>
-    public double EstimatedHours =>
+    public decimal EstimatedHours =>
         GetCategoryHours(Category) * GetAgeFactor(ManufacturingYear) * GetSeverityFactor(Severity);
 
     /// <summary>
@@ -60,7 +60,7 @@ public class JobDatabase
     /// </summary>
     /// <param name="category"> The job <see cref="JobCategoryEnum"/> category.</param>
     /// <returns> The base hours for the category.</returns>
-    private static double GetCategoryHours(JobCategoryEnum category) => category switch
+    private static decimal GetCategoryHours(JobCategoryEnum category) => category switch
     {
         JobCategoryEnum.Chassis => 3,
         JobCategoryEnum.Engine => 8,
@@ -74,14 +74,14 @@ public class JobDatabase
     /// </summary>
     /// <param name="year"> The manufacturing year.</param>
     /// <returns> The age factor.</returns>
-    private static double GetAgeFactor(int year)
+    private static decimal GetAgeFactor(int year)
     {
         int age = DateTime.Now.Year - year;
         return age switch
         {
-            <= 5 => 0.5,
+            <= 5 => 0.5M,
             <= 10 => 1,
-            <= 20 => 1.5,
+            <= 20 => 1.5M,
             _ => 2
         };
     }
@@ -91,12 +91,12 @@ public class JobDatabase
     /// </summary>
     /// <param name="severity"> The severity level.</param>
     /// <returns> The severity factor.</returns>
-    private static double GetSeverityFactor(int severity) => severity switch
+    private static decimal GetSeverityFactor(int severity) => severity switch
     {
-        <= 2 => 0.2,
-        <= 4 => 0.4,
-        <= 7 => 0.6,
-        <= 9 => 0.8,
+        <= 2 => 0.2M,
+        <= 4 => 0.4M,
+        <= 7 => 0.6M,
+        <= 9 => 0.8M,
         _ => 1
     };
 }
