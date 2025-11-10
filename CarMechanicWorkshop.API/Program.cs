@@ -25,10 +25,14 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(ClientProfile));
+builder.Services.AddAutoMapper(typeof(JobProfile));
 
 // Repositories & Services
 builder.Services.AddScoped<IRepository<ClientDatabase>, ClientsRepository>();
+builder.Services.AddScoped<IJobsRepository, JobsRepository>();
+
 builder.Services.AddScoped<IClientsService, ClientsService>();
+builder.Services.AddScoped<IJobsService, JobsService>();
 
 builder.Services.AddSerilog(option =>
         option.MinimumLevel.Information()
@@ -39,7 +43,7 @@ builder.Services.AddCors(policy =>
 {
     policy.AddDefaultPolicy(builder =>
     {
-        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+        builder.WithOrigins("http://localhost:8081").AllowAnyHeader().AllowAnyMethod();
     });
 });
 

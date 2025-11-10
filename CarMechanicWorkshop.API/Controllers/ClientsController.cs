@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarMechanicWorkshop.API.Controllers;
 
+
+/// <summary>
+/// API controller for managing clients
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class ClientsController : ControllerBase
@@ -17,6 +21,13 @@ public class ClientsController : ControllerBase
         _service = service;
     }
 
+    /// <summary>
+    /// Create a new client asynchronously
+    /// </summary>
+    /// <param name="dto"> The <see cref="CreateClientDTO"/> client DTO to create </param>
+    /// <returns> The created <see cref="ClientDTO"/> </returns>
+    /// <response code="201">Returns the created client</response>
+    /// <response code="400">If the client data is invalid</response>
     [HttpPost]
     public async Task<ActionResult<ClientDTO>> CreateClient([FromBody] CreateClientDTO dto)
     {
@@ -27,6 +38,11 @@ public class ClientsController : ControllerBase
         return CreatedAtAction(nameof(GetClientById), new { clientId = createdClient.Id }, createdClient);
     }
 
+    /// <summary>
+    /// Get all clients asynchronously
+    /// </summary>
+    /// <returns> A <see cref="IEnumerable{ClientDTO}"/> list of clients </returns>
+    /// <response code="200">Returns the list of clients</response>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ClientDTO>>> GetAllClients()
     {
@@ -34,6 +50,13 @@ public class ClientsController : ControllerBase
         return Ok(clients);
     }
 
+    /// <summary>
+    /// Get a client by its ID asynchronously
+    /// </summary>
+    /// <param name="clientId"> The ID of the client </param>
+    /// <returns> The <see cref="ClientDTO"/> client if found, otherwise null </returns>
+    /// <response code="200">Returns the requested client</response>
+    /// <response code="404">If the client is not found</response>
     [HttpGet("{clientId:int}")]
     public async Task<ActionResult<ClientDTO>> GetClientById(int clientId)
     {
@@ -41,6 +64,15 @@ public class ClientsController : ControllerBase
         return client is null ? NotFound() : Ok(client);
     }
 
+    /// <summary>
+    /// Update an existing client by its ID asynchronously
+    /// </summary>
+    /// <param name="clientId"> The ID of the client to update </param>
+    /// <param name="dto"> The <see cref="UpdateClientDTO"/> client DTO to update </param>
+    /// <returns> The updated <see cref="ClientDTO"/> if found, otherwise null </returns>
+    /// <response code="200">Returns the updated client</response>
+    /// <response code="400">If the client data is invalid</response>
+    /// <response code="404">If the client is not found</response>
     [HttpPut("{clientId:int}")]
     public async Task<ActionResult<ClientDTO>> UpdateClientById(int clientId, [FromBody] UpdateClientDTO dto)
     {
@@ -51,6 +83,13 @@ public class ClientsController : ControllerBase
         return updated is null ? NotFound() : Ok(updated);
     }
 
+    /// <summary>
+    /// Delete a client by its ID asynchronously
+    /// </summary>
+    /// <param name="clientId"> The ID of the client to delete </param>
+    /// <returns> The success status of the operation </returns>
+    /// <response code="204">Indicates that the client was successfully deleted</response>
+    /// <response code="404">If the client is not found</response>
     [HttpDelete("{clientId:int}")]
     public async Task<IActionResult> DeleteClientById(int clientId)
     {

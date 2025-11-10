@@ -20,14 +20,14 @@ namespace CarMechanicWorkshop.API.Interfaces
         /// <summary>
         /// Create a new client asynchronously
         /// </summary>
-        /// <param name="client"> The client entity to create </param>
+        /// <param name="client"> The <see cref="CreateClientDTO"/> client entity to create </param>
         /// <returns> The created <see cref="ClientDTO"/> </returns>
         public Task<ClientDTO> CreateAsync(CreateClientDTO client);
 
         /// <summary>
         /// Update an existing client asynchronously
         /// </summary>
-        /// <param name="client"> The client entity to update </param>
+        /// <param name="client"> The <see cref="UpdateClientDTO"/> client entity to update </param>
         /// <returns> The updated <see cref="ClientDTO"/> if found, otherwise null </returns>
         public Task<ClientDTO?> UpdateAsync(int id, UpdateClientDTO client);
 
@@ -41,7 +41,7 @@ namespace CarMechanicWorkshop.API.Interfaces
         /// <summary>
         /// Delete a client asynchronously
         /// </summary>
-        /// <param name="entity"> The client entity to delete </param>
+        /// <param name="entity"> The <see cref="ClientDTO"/> client entity to delete </param>
         /// <returns> The success status of the operation </returns>
         public Task<bool> DeleteAsync(ClientDTO entity);
     }

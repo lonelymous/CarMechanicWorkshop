@@ -1,7 +1,7 @@
 namespace CarMechanicWorkshop.Shared.Models.DTOs;
 
 /// <summary>
-/// Represents a client DTO in the car mechanic workshop system.
+/// Represents a client returned by the API.
 /// </summary>
 public class ClientDTO
 {

@@ -19,19 +19,22 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=database;Database=CarMechanicWorkshopDatabase;User=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True
+      - FRONTEND_API=http://frontend:8081
     ports:
       - "8080:8080"
     
   
   frontend:
     build:
-      context: .
+      context: .                # <— build from solution root
       dockerfile: CarMechanicWorkshop.Client/Dockerfile
+      args:
+        BACKEND_API: http://backend:8080
     depends_on:
       - backend
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - BackendApiUrl=http://backend:8080
+      - BACKEND_API=http://backend:8080
     ports:
       - "8081:80"
 
