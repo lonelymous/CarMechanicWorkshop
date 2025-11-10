@@ -8,7 +8,7 @@ namespace CarMechanicWorkshop.API.Repositories;
 /// <summary>
 /// Repository for managing JobDatabase entities
 /// </summary>
-public class JobsRepository : IRepository<JobDatabase>
+public class JobsRepository : IRepository<JobDatabase>, IJobsRepository
 {
     private readonly CarMechanicWorkshopContext _context;
     private readonly DbSet<JobDatabase> _jobs;
@@ -25,6 +25,16 @@ public class JobsRepository : IRepository<JobDatabase>
     /// <returns>A <see cref="IEnumerable{JobDatabase}"/> list of all jobs</returns>
     public async Task<IEnumerable<JobDatabase>> GetAllAsync()
         => await _jobs.AsNoTracking().ToListAsync();
+
+    /// <summary>
+    /// Get all jobs by client id asynchronously
+    /// </summary>
+    /// <param name="clientId"> The ID of the client </param>
+    /// <returns>A <see cref="IEnumerable{JobDatabase}"/> list of all jobs by client</returns>
+    public async Task<IEnumerable<JobDatabase>> GetAllByClientIdAsync(int clientId) => await _context.Jobs
+            .Include(j => j.Client)
+            .Where(j => j.ClientId == clientId)
+            .ToListAsync();
 
     /// <summary>
     /// Get a job by its ID asynchronously
