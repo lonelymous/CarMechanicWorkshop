@@ -43,10 +43,9 @@ public class JobsController : ControllerBase
     /// <returns> A <see cref="IEnumerable{JobDTO}"/> list of jobs </returns>
     /// <response code="200">Returns the list of jobs</response>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<JobDTO>>> GetAllJobs()
+    public async Task<ActionResult<IEnumerable<JobDTO>>> GetAllJobs([FromQuery] int? clientId)
     {
-        var jobs = await _service.GetAllAsync();
-        return Ok(jobs);
+        return Ok(clientId.HasValue ? await _service.GetAllByClientIdAsync(clientId.Value) : await _service.GetAllAsync());
     }
 
     /// <summary>
