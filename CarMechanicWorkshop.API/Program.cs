@@ -25,10 +25,14 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(ClientProfile));
+builder.Services.AddAutoMapper(typeof(JobProfile));
 
 // Repositories & Services
 builder.Services.AddScoped<IRepository<ClientDatabase>, ClientsRepository>();
+builder.Services.AddScoped<IRepository<JobDatabase>, JobsRepository>();
+
 builder.Services.AddScoped<IClientsService, ClientsService>();
+builder.Services.AddScoped<IJobsService, JobsService>();
 
 builder.Services.AddSerilog(option =>
         option.MinimumLevel.Information()
