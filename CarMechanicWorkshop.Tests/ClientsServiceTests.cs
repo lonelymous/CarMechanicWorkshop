@@ -63,20 +63,24 @@ public class ClientsServiceTests
     [Fact]
     public async Task GetByIdAsync_ReturnsNull_WhenNotFound()
     {
+        // Arrange
         var mockRepo = new Mock<IRepository<ClientDatabase>>();
         var mockUow = new Mock<IUnitOfWork>();
         mockRepo.Setup(r => r.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((ClientDatabase?)null);
 
         var service = new ClientsService(mockRepo.Object, _mapper, mockUow.Object);
 
+        // Act
         var result = await service.GetByIdAsync(42);
 
+        // Assert
         Assert.Null(result);
     }
 
     [Fact]
     public async Task UpdateAsync_ShouldReturnUpdatedClient()
     {
+        // Arrange
         var existing = new ClientDatabase { Id = 1, Name = "Old", Address = "A", Email = "old@mail.com" };
         var dto = new UpdateClientDTO { Name = "New" };
 
@@ -87,8 +91,10 @@ public class ClientsServiceTests
 
         var service = new ClientsService(mockRepo.Object, _mapper, mockUow.Object);
 
+        // Act
         var result = await service.UpdateAsync(1, dto);
 
+        // Assert
         Assert.Equal("New", result!.Name);
     }
 }
