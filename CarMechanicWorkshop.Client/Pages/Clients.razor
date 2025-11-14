@@ -9,6 +9,10 @@
 {
     <p><em>Loading...</em></p>
 }
+else if (clients == null || !clients.Any())
+{
+    <div class="alert alert-info">There are no clients available.</div>
+}
 else
 {
     <button class="btn btn-primary mb-2" @onclick="ShowAddForm">Add Client</button>
