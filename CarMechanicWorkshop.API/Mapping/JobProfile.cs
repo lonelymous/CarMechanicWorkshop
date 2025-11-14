@@ -24,6 +24,7 @@ public class JobProfile : Profile
         CreateMap<UpdateJobDTO, JobDatabase>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.Client, opt => opt.Ignore())
+            .ForMember(dest => dest.ClientId, opt => opt.Ignore())
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
     }
 }
