@@ -30,11 +30,18 @@ public class JobsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<JobDTO>> CreateJob([FromBody] CreateJobDTO dto)
     {
-        if (!ModelState.IsValid)
+        try
+        {
+            if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var createdJob = await _service.CreateAsync(dto);
-        return CreatedAtAction(nameof(GetJobById), new { jobId = createdJob.Id }, createdJob);
+            var createdJob = await _service.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetJobById), new { jobId = createdJob.Id }, createdJob);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
     }
 
     /// <summary>
@@ -74,11 +81,18 @@ public class JobsController : ControllerBase
     [HttpPut("{jobId:int}")]
     public async Task<ActionResult<JobDTO>> UpdateJobById(int jobId, [FromBody] UpdateJobDTO dto)
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+        try
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        var updated = await _service.UpdateAsync(jobId, dto);
-        return updated is null ? NotFound() : Ok(updated);
+            var updated = await _service.UpdateAsync(jobId, dto);
+            return updated is null ? NotFound() : Ok(updated);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
     }
 
     /// <summary>
