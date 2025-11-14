@@ -10,11 +10,11 @@ using Xunit;
 
 namespace CarMechanicWorkshop.Tests;
 
-public class ClientServiceTests
+public class ClientsServiceTests
 {
     private readonly IMapper _mapper;
 
-    public ClientServiceTests()
+    public ClientsServiceTests()
     {
         var loggerFactory = LoggerFactory.Create(builder =>
         {
@@ -29,7 +29,7 @@ public class ClientServiceTests
         _mapper = config.CreateMapper();
     }
 
-        [Fact]
+    [Fact]
     public void AutoMapperConfiguration_IsValid()
     {
         // This ensures mappings are correct and won't throw at runtime
@@ -43,7 +43,7 @@ public class ClientServiceTests
         var mockRepo = new Mock<IRepository<ClientDatabase>>();
         var mockUow = new Mock<IUnitOfWork>();
 
-        var service = new ClientService(mockRepo.Object, _mapper, mockUow.Object);
+        var service = new ClientsService(mockRepo.Object, _mapper, mockUow.Object);
 
         var dto = new CreateClientDTO
         {
@@ -63,20 +63,24 @@ public class ClientServiceTests
     [Fact]
     public async Task GetByIdAsync_ReturnsNull_WhenNotFound()
     {
+        // Arrange
         var mockRepo = new Mock<IRepository<ClientDatabase>>();
         var mockUow = new Mock<IUnitOfWork>();
         mockRepo.Setup(r => r.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((ClientDatabase?)null);
 
-        var service = new ClientService(mockRepo.Object, _mapper, mockUow.Object);
+        var service = new ClientsService(mockRepo.Object, _mapper, mockUow.Object);
 
+        // Act
         var result = await service.GetByIdAsync(42);
 
+        // Assert
         Assert.Null(result);
     }
 
     [Fact]
     public async Task UpdateAsync_ShouldReturnUpdatedClient()
     {
+        // Arrange
         var existing = new ClientDatabase { Id = 1, Name = "Old", Address = "A", Email = "old@mail.com" };
         var dto = new UpdateClientDTO { Name = "New" };
 
@@ -85,10 +89,12 @@ public class ClientServiceTests
 
         var mockUow = new Mock<IUnitOfWork>();
 
-        var service = new ClientService(mockRepo.Object, _mapper, mockUow.Object);
+        var service = new ClientsService(mockRepo.Object, _mapper, mockUow.Object);
 
+        // Act
         var result = await service.UpdateAsync(1, dto);
 
+        // Assert
         Assert.Equal("New", result!.Name);
     }
 }
