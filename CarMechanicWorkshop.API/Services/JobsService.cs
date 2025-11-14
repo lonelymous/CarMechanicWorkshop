@@ -60,6 +60,10 @@ public class JobsService : IJobsService
     /// <returns> The created <see cref="JobDTO"/> </returns>
     public async Task<JobDTO> CreateAsync(CreateJobDTO dto)
     {
+        // Validation: ManufacturingYear <= 1900
+        if (dto.ManufacturingYear <= 1900)
+            throw new ArgumentException("The manufacturing year cannot be less than 1900.");
+
         var entity = _mapper.Map<JobDatabase>(dto);
         await _unitOfWork.BeginTransactionAsync();
         try
@@ -86,6 +90,13 @@ public class JobsService : IJobsService
     {
         var existing = await _repository.GetByIdAsync(id);
         if (existing is null) return null;
+
+        // Validation: ManufacturingYear <= 1900
+        if (dto.ManufacturingYear.HasValue && dto.ManufacturingYear.Value < 1900)
+            throw new ArgumentException("The manufacturing year cannot be less than 1900.");
+
+        // Validation: Status Progress
+        if (dto.Status.HasValue && (existing.Status >= dto.Status.Value)) throw new ArgumentException($"Invalid status transition: {existing.Status} → {dto.Status}. Only forward transitions are allowed.");
 
         _mapper.Map(dto, existing);
 
