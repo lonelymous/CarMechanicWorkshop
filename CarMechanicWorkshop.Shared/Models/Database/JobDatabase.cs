@@ -8,47 +8,56 @@ namespace CarMechanicWorkshop.Shared.Models.Database;
 public class JobDatabase
 {
     /// <summary>
-    /// Gets or sets the unique identifier for the job.
+    /// The unique identifier for the job.
     /// </summary>
     public int Id { get; set; }
+
     /// <summary>
-    /// Gets or sets the ID of the client who requested the job.
+    /// The ID of the client who requested the job.
     /// </summary>
     [Required]
     public int ClientId { get; set; }
+
     /// <summary>
-    /// Gets or sets the <see cref="ClientDatabase"/> client who requested the job.
+    /// The <see cref="ClientDatabase"/> client who requested the job.
     /// </summary>
     public ClientDatabase? Client { get; set; }
+
     /// <summary>
-    /// Gets or sets the license plate of the vehicle.
+    /// The license plate of the vehicle.
     /// </summary>
     [Required, RegularExpression(@"^[A-Z]{3}-\d{3}$")]
     public string LicensePlate { get; set; } = string.Empty;
+
     /// <summary>
-    /// Gets or sets the manufacturing year of the vehicle.
+    /// The manufacturing year of the vehicle.
     /// </summary>
     [Range(1900, int.MaxValue)]
     public int ManufacturingYear { get; set; }
+
     /// <summary>
-    /// Gets or sets the category of the job.
+    /// The category of the job.
     /// </summary>
     [Required]
     public JobCategoryEnum Category { get; set; }
+
     /// <summary>
-    /// Gets or sets the description of the job.
+    /// The description of the job.
     /// </summary>
     [Required, MinLength(5)]
     public string Description { get; set; } = string.Empty;
+
     /// <summary>
-    /// Gets or sets the severity of the job.
+    /// The severity of the job.
     /// </summary>
     [Range(1, 10)]
     public int Severity { get; set; }
+
     /// <summary>
-    /// Gets or sets the status of the job.
+    /// The status of the job.
     /// </summary>
     public JobStatusEnum Status { get; set; } = JobStatusEnum.Accepted;
+
     /// <summary>
     /// Gets the estimated hours required to complete the job.
     /// </summary>
