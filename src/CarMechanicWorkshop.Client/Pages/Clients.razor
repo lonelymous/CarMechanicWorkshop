@@ -1,0 +1,92 @@
+@page "/clients"
+@using CarMechanicWorkshop.Client.Services
+@using CarMechanicWorkshop.Shared.DTOs.Clients
+@inject ClientsApiService ClientsService
+
+<h3>Clients</h3>
+
+@if (clients == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (clients == null || !clients.Any())
+{
+    <div class="alert alert-info">There are no clients available.</div>
+}
+else
+{
+    <button class="btn btn-primary mb-2" @onclick="ShowAddForm">Add Client</button>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in clients)
+            {
+                <tr>
+                    <td>@c.Name</td>
+                    <td>@c.Address</td>
+                    <td>@c.Email</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning me-1" @onclick="() => EditClient(c.Id)">Edit</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteClient(c.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (isAdding)
+{
+    <EditForm Model="newClient" OnValidSubmit="HandleAdd">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <InputText @bind-Value="newClient.Name" class="form-control mb-2" placeholder="Name" />
+        <InputText @bind-Value="newClient.Address" class="form-control mb-2" placeholder="Address" />
+        <InputText @bind-Value="newClient.Email" class="form-control mb-2" placeholder="Email" />
+        <button class="btn btn-success" type="submit">Save</button>
+        <button class="btn btn-secondary ms-2" @onclick="() => isAdding = false">Cancel</button>
+    </EditForm>
+}
+
+@code {
+    private IEnumerable<ClientDTO>? clients;
+    private CreateClientDTO newClient = new();
+    private bool isAdding = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        clients = await ClientsService.GetAllAsync();
+    }
+
+    void ShowAddForm() => isAdding = true;
+
+    async Task HandleAdd()
+    {
+        var ok = await ClientsService.CreateAsync(newClient);
+        if (ok)
+        {
+            clients = await ClientsService.GetAllAsync();
+            newClient = new();
+            isAdding = false;
+        }
+    }
+
+    async Task DeleteClient(int id)
+    {
+        if (await ClientsService.DeleteAsync(id))
+            clients = await ClientsService.GetAllAsync();
+    }
+
+    void EditClient(int id)
+    {
+        //TODO navigate or open a dialog for editing
+    }
+}
