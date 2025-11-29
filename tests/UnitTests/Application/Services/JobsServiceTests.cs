@@ -1,10 +1,4 @@
 ﻿using AutoMapper;
-using CarMechanicWorkshop.API.Interfaces;
-using CarMechanicWorkshop.API.Mapping;
-using CarMechanicWorkshop.API.Services;
-using CarMechanicWorkshop.Shared.Models;
-using CarMechanicWorkshop.Shared.Models.Database;
-using CarMechanicWorkshop.Shared.Models.DTOs;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
@@ -41,7 +35,7 @@ public class JobsServiceTests
     public async Task CreateAsync_ShouldFail_WhenManufacturingYearIsToLow()
     {
         // Arrange
-        var mockRepo = new Mock<IRepository<JobDatabase>>();
+        var mockRepo = new Mock<IRepository<Job>>();
         var mockUow = new Mock<IUnitOfWork>();
 
         var service = new JobsService(mockRepo.Object, _mapper, mockUow.Object);
@@ -64,7 +58,7 @@ public class JobsServiceTests
     public async Task CreateAsync_ShouldMapAndReturnJobDTO()
     {
         // Arrange
-        var mockRepo = new Mock<IRepository<JobDatabase>>();
+        var mockRepo = new Mock<IRepository<Job>>();
         var mockUow = new Mock<IUnitOfWork>();
 
         var service = new JobsService(mockRepo.Object, _mapper, mockUow.Object);
@@ -90,9 +84,9 @@ public class JobsServiceTests
     [Fact]
     public async Task GetByIdAsync_ReturnsNull_WhenNotFound()
     {
-        var mockRepo = new Mock<IRepository<JobDatabase>>();
+        var mockRepo = new Mock<IRepository<Job>>();
         var mockUow = new Mock<IUnitOfWork>();
-        mockRepo.Setup(r => r.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((JobDatabase?)null);
+        mockRepo.Setup(r => r.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((Job?)null);
 
         var service = new JobsService(mockRepo.Object, _mapper, mockUow.Object);
         
@@ -107,7 +101,7 @@ public class JobsServiceTests
     public async Task UpdateStatus_ShouldFail_WhenMovingBackward()
     {
         // Arrange
-        var existing = new JobDatabase
+        var existing = new Job
         {
             Id = 1,
             ClientId = 1,
@@ -123,7 +117,7 @@ public class JobsServiceTests
             Status = JobStatusEnum.Accepted,
         };
 
-        var mockRepo = new Mock<IRepository<JobDatabase>>();
+        var mockRepo = new Mock<IRepository<Job>>();
         mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(existing);
 
         var mockUow = new Mock<IUnitOfWork>();
@@ -138,7 +132,7 @@ public class JobsServiceTests
     public async Task UpdateStatus_ShouldReturnUpdatedJob()
     {
         // Arrange
-        var existing = new JobDatabase
+        var existing = new Job
         {
             Id = 1,
             ClientId = 1,
@@ -156,7 +150,7 @@ public class JobsServiceTests
             Severity = 10,
         };
 
-        var mockRepo = new Mock<IRepository<JobDatabase>>();
+        var mockRepo = new Mock<IRepository<Job>>();
         mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(existing);
 
         var mockUow = new Mock<IUnitOfWork>();

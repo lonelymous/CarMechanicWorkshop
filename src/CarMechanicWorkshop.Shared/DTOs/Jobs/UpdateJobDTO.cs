@@ -11,7 +11,7 @@ public class UpdateJobDTO
     /// <summary>
     /// The license plate of the vehicle.
     /// </summary>
-    [RegularExpression(@"^[A-Z]{3}-\d{3}$", ErrorMessage = "License plate must match format AAA-123.")]
+    [RegularExpression(@"^[A-Z]{3,4}-\d{3}$", ErrorMessage = "License plate must be ABC-123 or ABCD-123 format.")]
     public string? LicensePlate { get; set; }
 
     /// <summary>

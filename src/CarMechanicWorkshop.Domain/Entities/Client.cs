@@ -30,7 +30,7 @@ public class Client
     /// The email of the client.
     /// </summary>
     [Required, EmailAddress]
-    public Email Email { get; set; }
+    public string Email { get; set; } = string.Empty;
 
     /// <summary>
     /// The phone number of the client.

@@ -19,6 +19,6 @@ public class CreateClientDTO
     /// <summary>
     /// The email of the client.
     /// </summary>
-    [Required, EmailAddress]
+    [Required, EmailAddress(ErrorMessage = "Invalid email address.")]
     public string Email { get; set; } = string.Empty;
 }

@@ -1,9 +1,4 @@
 using AutoMapper;
-using CarMechanicWorkshop.API.Interfaces;
-using CarMechanicWorkshop.API.Mapping;
-using CarMechanicWorkshop.API.Services;
-using CarMechanicWorkshop.Shared.Models.Database;
-using CarMechanicWorkshop.Shared.Models.DTOs;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
@@ -40,7 +35,7 @@ public class ClientsServiceTests
     public async Task CreateAsync_ShouldMapAndReturnClientDTO()
     {
         // Arrange
-        var mockRepo = new Mock<IRepository<ClientDatabase>>();
+        var mockRepo = new Mock<IRepository<Client>>();
         var mockUow = new Mock<IUnitOfWork>();
 
         var service = new ClientsService(mockRepo.Object, _mapper, mockUow.Object);
@@ -64,9 +59,9 @@ public class ClientsServiceTests
     public async Task GetByIdAsync_ReturnsNull_WhenNotFound()
     {
         // Arrange
-        var mockRepo = new Mock<IRepository<ClientDatabase>>();
+        var mockRepo = new Mock<IRepository<Client>>();
         var mockUow = new Mock<IUnitOfWork>();
-        mockRepo.Setup(r => r.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((ClientDatabase?)null);
+        mockRepo.Setup(r => r.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((Client?)null);
 
         var service = new ClientsService(mockRepo.Object, _mapper, mockUow.Object);
 
@@ -81,10 +76,10 @@ public class ClientsServiceTests
     public async Task UpdateAsync_ShouldReturnUpdatedClient()
     {
         // Arrange
-        var existing = new ClientDatabase { Id = 1, Name = "Old", Address = "A", Email = "old@mail.com" };
+        var existing = new Client { Id = 1, Name = "Old", Address = "A", Email = "old@mail.com" };
         var dto = new UpdateClientDTO { Name = "New" };
 
-        var mockRepo = new Mock<IRepository<ClientDatabase>>();
+        var mockRepo = new Mock<IRepository<Client>>();
         mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(existing);
 
         var mockUow = new Mock<IUnitOfWork>();

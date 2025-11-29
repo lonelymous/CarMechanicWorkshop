@@ -5,18 +5,18 @@
 
 <h3>Clients</h3>
 
+<button class="btn btn-primary mb-3" @onclick="ShowAddForm">Add Client</button>
+
 @if (clients == null)
 {
     <p><em>Loading...</em></p>
 }
-else if (clients == null || !clients.Any())
+else if (!clients.Any())
 {
     <div class="alert alert-info">There are no clients available.</div>
 }
 else
 {
-    <button class="btn btn-primary mb-2" @onclick="ShowAddForm">Add Client</button>
-
     <table class="table table-striped">
         <thead>
             <tr>
@@ -34,7 +34,7 @@ else
                     <td>@c.Address</td>
                     <td>@c.Email</td>
                     <td>
-                        <button class="btn btn-sm btn-warning me-1" @onclick="() => EditClient(c.Id)">Edit</button>
+                        <button class="btn btn-sm btn-warning me-1" @onclick="() => StartEdit(c)">Edit</button>
                         <button class="btn btn-sm btn-danger" @onclick="() => DeleteClient(c.Id)">Delete</button>
                     </td>
                 </tr>
@@ -45,48 +45,107 @@ else
 
 @if (isAdding)
 {
-    <EditForm Model="newClient" OnValidSubmit="HandleAdd">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <InputText @bind-Value="newClient.Name" class="form-control mb-2" placeholder="Name" />
-        <InputText @bind-Value="newClient.Address" class="form-control mb-2" placeholder="Address" />
-        <InputText @bind-Value="newClient.Email" class="form-control mb-2" placeholder="Email" />
-        <button class="btn btn-success" type="submit">Save</button>
-        <button class="btn btn-secondary ms-2" @onclick="() => isAdding = false">Cancel</button>
-    </EditForm>
+    <div class="card p-3 mt-3">
+        <h5>Add New Client</h5>
+        <EditForm Model="newClient" OnValidSubmit="HandleAdd">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <InputText @bind-Value="newClient.Name" class="form-control mb-2" placeholder="Name" />
+            <InputText @bind-Value="newClient.Address" class="form-control mb-2" placeholder="Address" />
+            <InputText @bind-Value="newClient.Email" class="form-control mb-2" placeholder="Email" />
+
+            <button class="btn btn-success" type="submit">Save</button>
+            <button class="btn btn-secondary ms-2" @onclick="CancelAdd">Cancel</button>
+        </EditForm>
+    </div>
+}
+
+@if (isEditing)
+{
+    <div class="card p-3 mt-3">
+        <h5>Edit Client</h5>
+        <EditForm Model="editClient" OnValidSubmit="HandleEdit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <InputText @bind-Value="editClient.Name" class="form-control mb-2" placeholder="Name" />
+            <InputText @bind-Value="editClient.Address" class="form-control mb-2" placeholder="Address" />
+            <InputText @bind-Value="editClient.Email" class="form-control mb-2" placeholder="Email" />
+
+            <button class="btn btn-success" type="submit">Update</button>
+            <button class="btn btn-secondary ms-2" @onclick="CancelEdit">Cancel</button>
+        </EditForm>
+    </div>
 }
 
 @code {
     private IEnumerable<ClientDTO>? clients;
     private CreateClientDTO newClient = new();
+    private UpdateClientDTO editClient = new();
+    private int editingId;
+
     private bool isAdding = false;
+    private bool isEditing = false;
 
     protected override async Task OnInitializedAsync()
     {
         clients = await ClientsService.GetAllAsync();
     }
 
-    void ShowAddForm() => isAdding = true;
+    // ---------- ADD ----------
+    void ShowAddForm()
+    {
+        newClient = new();
+        isAdding = true;
+        isEditing = false;
+    }
+
+    void CancelAdd() => isAdding = false;
 
     async Task HandleAdd()
     {
-        var ok = await ClientsService.CreateAsync(newClient);
-        if (ok)
+        if (await ClientsService.CreateAsync(newClient))
         {
             clients = await ClientsService.GetAllAsync();
-            newClient = new();
             isAdding = false;
         }
     }
 
+    // ---------- EDIT ----------
+    void StartEdit(ClientDTO c)
+    {
+        editingId = c.Id;
+
+        editClient = new UpdateClientDTO
+        {
+            Name = c.Name,
+            Address = c.Address,
+            Email = c.Email
+        };
+
+        isEditing = true;
+        isAdding = false;
+    }
+
+    void CancelEdit() => isEditing = false;
+
+    async Task HandleEdit()
+    {
+        var ok = await ClientsService.UpdateAsync(editingId, editClient);
+        if (ok)
+        {
+            clients = await ClientsService.GetAllAsync();
+            isEditing = false;
+        }
+    }
+
+    // ---------- DELETE ----------
     async Task DeleteClient(int id)
     {
         if (await ClientsService.DeleteAsync(id))
+        {
             clients = await ClientsService.GetAllAsync();
-    }
-
-    void EditClient(int id)
-    {
-        //TODO navigate or open a dialog for editing
+        }
     }
 }

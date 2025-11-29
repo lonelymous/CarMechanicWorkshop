@@ -1,32 +1,41 @@
-# Build stage
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+# BUILD STAGE
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-# Copy solution file and restore
-COPY ../CarMechanicWorkshop.sln ./
-
-# Copy all project files (for restore caching)
-COPY ../CarMechanicWorkshop.Shared/CarMechanicWorkshop.Shared.csproj ./CarMechanicWorkshop.Shared/
+# Copy project files for all dependencies (restore cache)
+COPY ./CarMechanicWorkshop.Domain/CarMechanicWorkshop.Domain.csproj ./CarMechanicWorkshop.Domain/
+COPY ./CarMechanicWorkshop.Application/CarMechanicWorkshop.Application.csproj ./CarMechanicWorkshop.Application/
+COPY ./CarMechanicWorkshop.Infrastructure/CarMechanicWorkshop.Infrastructure.csproj ./CarMechanicWorkshop.Infrastructure/
+COPY ./CarMechanicWorkshop.Shared/CarMechanicWorkshop.Shared.csproj ./CarMechanicWorkshop.Shared/
 COPY ./CarMechanicWorkshop.Client/CarMechanicWorkshop.Client.csproj ./CarMechanicWorkshop.Client/
 
-RUN dotnet restore CarMechanicWorkshop.Client/CarMechanicWorkshop.Client.csproj
+# Restore client project
+RUN dotnet restore ./CarMechanicWorkshop.Client/CarMechanicWorkshop.Client.csproj
 
-COPY . .
+# Copy source code (actual files)
+COPY ./CarMechanicWorkshop.Domain/ ./CarMechanicWorkshop.Domain/
+COPY ./CarMechanicWorkshop.Application/ ./CarMechanicWorkshop.Application/
+COPY ./CarMechanicWorkshop.Infrastructure/ ./CarMechanicWorkshop.Infrastructure/
+COPY ./CarMechanicWorkshop.Shared/ ./CarMechanicWorkshop.Shared/
+COPY ./CarMechanicWorkshop.Client/ ./CarMechanicWorkshop.Client/
 
+
+# Publish
 WORKDIR /src/CarMechanicWorkshop.Client
-
-# Argument for backend URL (build-time)
-ARG BACKEND_API=http://localhost:8080
-ENV BACKEND_API=${BACKEND_API}
-
-# 
-RUN sed -i "s|%BACKEND_API%|${BACKEND_API}|g" wwwroot/index.html
-
 RUN dotnet publish -c Release -o /app/publish
 
-# Runtime stage — use lightweight web server
+# RUNTIME (Nginx)
 FROM nginx:alpine AS final
 WORKDIR /usr/share/nginx/html
+
+# Clear default nginx page
+RUN rm -rf ./*
+
+# Copy published Blazor WebAssembly app
 COPY --from=build /app/publish/wwwroot .
 
+# Expose ports
 EXPOSE 80
+EXPOSE 443
+
+CMD ["nginx", "-g", "daemon off;"]
