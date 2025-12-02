@@ -14,7 +14,14 @@ public class CarMechanicWorkshopContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Client>().ToTable("Clients");
-        modelBuilder.Entity<Job>().ToTable("Jobs");
+    modelBuilder.Entity<Client>()
+        .ToTable("Clients")
+        .HasMany(c => c.Jobs)
+        .WithOne(j => j.Client)
+        .HasForeignKey(j => j.ClientId)
+        .OnDelete(DeleteBehavior.Cascade);
+
+    modelBuilder.Entity<Job>()
+        .ToTable("Jobs");
     }
 }
