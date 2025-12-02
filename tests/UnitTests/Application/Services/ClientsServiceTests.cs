@@ -1,4 +1,10 @@
 using AutoMapper;
+using CarMechanicWorkshop.Application.Interfaces;
+using CarMechanicWorkshop.Application.Interfaces.Repositories;
+using CarMechanicWorkshop.Application.Mappers;
+using CarMechanicWorkshop.Application.Services;
+using CarMechanicWorkshop.Domain.Entities;
+using CarMechanicWorkshop.Shared.DTOs.Clients;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
@@ -27,7 +33,6 @@ public class ClientsServiceTests
     [Fact]
     public void AutoMapperConfiguration_IsValid()
     {
-        // This ensures mappings are correct and won't throw at runtime
         _mapper.ConfigurationProvider.AssertConfigurationIsValid();
     }
 

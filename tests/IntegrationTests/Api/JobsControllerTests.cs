@@ -4,23 +4,23 @@ using FluentAssertions;
 
 namespace CarMechanicWorkshop.IntegrationTests.Api;
 
-public class ClientsControllerTests : IClassFixture<CustomWebApplicationFactory>
+public class JobsControllerTests : IClassFixture<CustomWebApplicationFactory>
 {
     private readonly HttpClient _client;
 
-    public ClientsControllerTests(CustomWebApplicationFactory factory)
+    public JobsControllerTests(CustomWebApplicationFactory factory)
     {
         _client = factory.CreateClient();
     }
 
     [Fact]
-    public async Task GetAllClients_ShouldReturnOk()
+    public async Task GetAllJobs_ShouldReturnOk()
     {
-        var response = await _client.GetAsync("/api/clients");
+        var response = await _client.GetAsync("/api/jobs");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var body = await response.Content.ReadAsStringAsync();
-        body.Should().Contain("clients");
+        body.Should().Contain("jobs");
     }
 }

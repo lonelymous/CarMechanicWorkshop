@@ -13,11 +13,11 @@ public class MigrationTests
         using var connection = new SqliteConnection("DataSource=:memory:");
         await connection.OpenAsync();
 
-        var options = new DbContextOptionsBuilder<AppDbContext>()
+        var options = new DbContextOptionsBuilder<CarMechanicWorkshopContext>()
             .UseSqlite(connection)
             .Options;
 
-        using var context = new AppDbContext(options);
+        using var context = new CarMechanicWorkshopContext(options);
 
         // Act: Apply all migrations
         var exception = await Record.ExceptionAsync(() => context.Database.MigrateAsync());

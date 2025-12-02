@@ -33,7 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CarMechanicWorkshop.API\CarMechanicWorkshop.Api.csproj" />
+    <ProjectReference Include="..\..\src\CarMechanicWorkshop.Api\CarMechanicWorkshop.Api.csproj" />
+    <ProjectReference Include="..\..\src\CarMechanicWorkshop.Application\CarMechanicWorkshop.Application.csproj" />
+    <ProjectReference Include="..\..\src\CarMechanicWorkshop.Domain\CarMechanicWorkshop.Domain.csproj" />
+    <ProjectReference Include="..\..\src\CarMechanicWorkshop.Shared\CarMechanicWorkshop.Shared.csproj" />
   </ItemGroup>
 
 </Project>

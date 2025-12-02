@@ -66,13 +66,23 @@ builder.Services.AddCors(policy =>
 
 var app = builder.Build();
 
-// --- Automatically apply migrations here ---
-using (var scope = app.Services.CreateScope())
+if (!builder.Environment.IsEnvironment("Testing"))
 {
-    var db = scope.ServiceProvider.GetRequiredService<CarMechanicWorkshopContext>();
-    if ((await db.Database.GetPendingMigrationsAsync()).Any())
+    using (var scope = app.Services.CreateScope())
     {
-        await db.Database.MigrateAsync();
+        try
+        {
+            var db = scope.ServiceProvider.GetRequiredService<CarMechanicWorkshopContext>();
+            if ((await db.Database.GetPendingMigrationsAsync()).Any())
+            {
+                await db.Database.MigrateAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "An error occurred while migrating the database.");
+        }
     }
 }
 

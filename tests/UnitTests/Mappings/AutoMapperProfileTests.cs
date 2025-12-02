@@ -1,45 +1,47 @@
 using AutoMapper;
 using CarMechanicWorkshop.Application.Mappers;
+using CarMechanicWorkshop.Domain.Entities;
+using CarMechanicWorkshop.Shared.DTOs.Clients;
+using Microsoft.Extensions.Logging;
 
 namespace UnitTests.Mappings;
 
 public class AutoMapperProfileTests
 {
-    private readonly IConfigurationProvider _config;
     private readonly IMapper _mapper;
 
     public AutoMapperProfileTests()
-    {
-        _config = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile<ClientProfile>();
-            cfg.AddProfile<JobProfile>();
-            cfg.AddProfile<CarProfile>();
-            // Add all your profiles...
+        var loggerFactory = LoggerFactory.Create(builder =>
+        {
+            builder.AddConsole();
         });
 
-        _mapper = _config.CreateMapper();
+        var config = new MapperConfiguration(cfg =>
+        {
+                        cfg.AddProfile<ClientProfile>();
+            cfg.AddProfile<JobProfile>();
+        }, loggerFactory);
+
+        _mapper = config.CreateMapper();
     }
 
     [Fact]
     public void AutoMapper_Configuration_IsValid()
     {
-        _config.AssertConfigurationIsValid();
+        _mapper.ConfigurationProvider.AssertConfigurationIsValid();
     }
 
     [Fact]
     public void Should_Map_ClientDto_To_Client()
     {
-        var dto = new CreateClientDto
+        var dto = new CreateClientDTO
         {
-            FirstName = "John",
-            LastName = "Doe",
-            Phone = "+3620123456"
+            Name = "John Doe"
         };
 
         var entity = _mapper.Map<Client>(dto);
 
-        Assert.Equal("John", entity.FirstName);
-        Assert.Equal("Doe", entity.LastName);
+        Assert.Equal("John Doe", entity.Name);
     }
 }
